@@ -1,6 +1,10 @@
-﻿namespace SupplyRequester.Business.Services.Interfaces
+﻿using SupplyRequester.Model.DataTransferObjects;
+using System.Threading.Tasks;
+
+namespace SupplyRequester.Business.Services.Interfaces
 {
-    public interface IUserService
+    public interface IUserService : IBaseService
     {
+        Task Add(UserDto userDto);
     }
 }

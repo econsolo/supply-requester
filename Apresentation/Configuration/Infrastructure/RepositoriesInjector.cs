@@ -6,7 +6,7 @@ namespace SupplyRequester.Apresentation.Configuration.Infrastructure
 {
     public static class RepositoriesInjector
     {
-        public static void Inject(this IServiceCollection services)
+        public static void InjectRepositories(this IServiceCollection services)
         {
             services.AddSingleton<IUserRepository, UserRepository>();
         }

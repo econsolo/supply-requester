@@ -1,19 +1,18 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Logging;
+using SupplyRequester.Business.Services.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
 namespace SupplyRequester.Business.Services
 {
-    public abstract class BaseService
+    public abstract class BaseService : IBaseService
     {
         protected ILogger Logger;
         protected IMapper Mapper;
+        private HttpStatusCode _statusCode;
         private readonly List<string> _notifications;
-
-        public bool HasNotifications => _notifications.Any();
-        public HttpStatusCode StatusCode { get; private set; }
 
         protected BaseService(
             IMapper mapper
@@ -21,24 +20,39 @@ namespace SupplyRequester.Business.Services
         {
             Mapper = mapper;
             _notifications = new List<string>();
-            StatusCode = HttpStatusCode.OK;
+            _statusCode = HttpStatusCode.OK;
         }
 
-        protected void Notify(params string[] messages)
+        public bool HasNotifications()
+        {
+            return _notifications.Any();
+        }
+
+        public List<string> GetNotifications()
+        {
+            return _notifications;
+        }
+
+        public HttpStatusCode GetHttpStatusCode()
+        {
+            return _statusCode;
+        }
+
+        public void Notify(params string[] messages)
         {
             Notify(HttpStatusCode.OK, messages);
         }
 
-        protected void Notify(HttpStatusCode httpStatusCode, params string[] messages)
+        public void Notify(HttpStatusCode httpStatusCode, params string[] messages)
         {
-            StatusCode = httpStatusCode;
+            _statusCode = httpStatusCode;
             _notifications.AddRange(messages);
         }
 
-        protected void ClearNotifications()
+        public void ClearNotifications()
         {
             _notifications.Clear();
-            StatusCode = HttpStatusCode.OK;
+            _statusCode = HttpStatusCode.OK;
         }
     }
 }

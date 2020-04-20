@@ -6,8 +6,9 @@ namespace SupplyRequester.Apresentation.Configuration.Business
 {
     public static class ServicesInjector
     {
-        public static void Inject(this IServiceCollection services)
+        public static void InjectServices(this IServiceCollection services)
         {
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IUserService, UserService>();
         }
     }
